@@ -5,7 +5,7 @@ We are given:
 
 -   A  **directed graph**  ( G = (V, E) ) with ( |V| = N ).
     
--   Each node $ v \in V $ has a  **color (group)**  ( c(v) \in {1, 2, \dots, m} ), with ( m \le N ).
+-   Each node $v \in V$ has a  **color (group)**  ( c(v) \in {1, 2, \dots, m} ), with ( m \le N ).
     
 -   For each node ( v ), define its  **color in-degree vector**:
     

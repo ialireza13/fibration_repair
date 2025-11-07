@@ -10,9 +10,9 @@ We are given:
 -   For each node $v$, define its  **color in-degree vector**:
     
 
-[  
+$$
 deg_{in}(v) = [d_1(v), d_2(v), \dots, d_m(v)]  
-]
+$$
 
 where $d_k(v)$ = number of incoming edges to $v$  **from nodes of color $k$**.
 
@@ -27,7 +27,7 @@ Add a minimal set of edges to make this property true — i.e., to make every gr
 
 ----------
 
-## 🧠 Algorithm
+## Algorithm
 
 ### Step 1. Compute color–color in-degree matrix per node
 
@@ -37,7 +37,7 @@ For each node $v$:
     
 2.  For each incoming edge $(u \to v)$:
     
-    -   Increment $deg_{in}[v][c(u)]++$.
+    -   Increment $deg_{in}[v][c(u)]$ by one.
         
 
 This gives every node’s color-in-degree vector.
@@ -48,19 +48,19 @@ This gives every node’s color-in-degree vector.
 
 ### Step 2. Compute target in-degree vector per color group
 
-For each color $g = 1..m$:
+For each color $g = 1 \dots m$:
 
 1.  Consider all nodes $v$ with $c(v) = g$.
     
-2.  For each color $k = 1..m$:
+2.  For each color $k = 1 \dots m$:
     
     -   Compute $t_{g,k} = \max_{v: c(v)=g} deg_{in}[v][k]$.
         
 
 This defines the  **target color-in-degree vector**  for group $g$:  
-[  
-T_g = [t_{g,1}, t_{g,2}, ..., t_{g,m}]  
-]
+$$ 
+T_g = [t_{g,1}, t_{g,2}, \dots, t_{g,m}]  
+$$
 
 Justification:  
 To make all nodes in color $g$ equal, we must raise all their $d_k(v)$ up to the  **maximum**  observed value, since we can only add edges (not remove).
@@ -93,7 +93,7 @@ Implementation detail:
 
 -   Maintain for each color $k$ a list of nodes $L_k$.
     
--   When we need to add an edge from color $k$ to some target $v$, choose any node from $L_k$ (possibly allowing self-loop if $c(v)=k$).
+-   When we need to add an edge from color $k$ to some target $v$, choose any node from $L_k$ (possibly allowing self-loop if $c(v)=k$.
     
 -   Insert new edge(s).
     
@@ -102,137 +102,20 @@ Implementation detail:
 
 ----------
 
-## ⏱️ Total Time Complexity
+## Total Time Complexity
 
-Step
-
-Complexity
-
-Step 1 (counting)
-
-$O(E)$
-
-Step 2 (target vectors)
-
-$O(Nm)$
-
-Step 3 (compute deficits)
-
-$O(Nm)$
-
-Step 4 (add edges)
-
-$O(M_{add})$
-
-Overall:
-
-[  
+$$
 O(E + Nm + M_{add})  
-]
+$$
 
 In the worst case, $M_{add} \le N m \cdot \max_{v,k} t_{g,k}$, but practically $M_{add} \le O(Nm)$ for dense graphs.
 
 ----------
 
-## ✅ Correctness Justification
-
--   After repair, for every color $g$, every node $v$ with $c(v)=g$ has:  
-    [  
-    deg_{in}[v][k] = t_{g,k} = \max_{v': c(v')=g} deg_{in}[v'][k]  
-    ]
-    
--   Thus all nodes in color $g$ share the same color-in-degree vector.
-    
--   No unnecessary edge removals are done (only additions).
-    
--   The number of added edges is  **minimal**, since each node only receives exactly enough edges to reach the maximum per color.
-    
-
-----------
-
-## ⚙️ Example
-
-Let’s revisit your example:
-
-Node
-
-Color
-
-In from c1
-
-In from c2
-
-In from c3
-
-i
-
-1
-
-2
-
-3
-
-0
-
-j
-
-1
-
-1
-
-2
-
-1
-
-Then for color group 1 (nodes i, j):
-
--   Target vector $T_1 = [\max(2,1), \max(3,2), \max(0,1)] = [2,3,1]$
-    
-
-Missing edges:
-
--   For i: +1 edge from color 3
-    
--   For j: +1 from color 1, +1 from color 2
-    
-
-Exactly as desired.
-
-----------
-
-## 🧮 Possible Optimizations
+## Possible Optimizations
 
 -   If the graph is sparse, use adjacency lists.
     
 -   If $m \ll N$, the algorithm is near-linear.
     
 -   You can parallelize Step 1 and Step 3 easily since each node’s computation is independent.
-    
-
-----------
-
-## 🧾 Summary
-
-**Algorithm:**
-
-1.  Compute color-in-degree per node.
-    
-2.  For each color group, determine max per incoming color.
-    
-3.  For each node, compute deficit and add edges accordingly.
-    
-
-**Time Complexity:**  $O(E + Nm + M_{add})$  
-**Space Complexity:**  $O(Nm)$  
-**Guarantees:**
-
--   Produces minimal edge additions.
-    
--   Balances color-in-degree vectors per color group.
-    
--   Works with self-loops.
-    
-
-----------
-
-Would you like me to give you a  **Python implementation**  of this algorithm next (that works with adjacency lists and color arrays)?

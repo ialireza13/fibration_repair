@@ -11,7 +11,7 @@ We are given:
     
 
 [  
-\text{deg_in}(v) = [d_1(v), d_2(v), \dots, d_m(v)]  
+deg_{in}(v) = [d_1(v), d_2(v), \dots, d_m(v)]  
 ]
 
 where $d_k(v)$ = number of incoming edges to $v$  **from nodes of color $k$**.
@@ -33,11 +33,11 @@ Add a minimal set of edges to make this property true — i.e., to make every gr
 
 For each node $v$:
 
-1.  Initialize an array $\text{deg_in}[v][1..m] = 0$.
+1.  Initialize an array $deg_{in}[v][1..m] = 0$.
     
 2.  For each incoming edge $(u \to v)$:
     
-    -   Increment $\text{deg_in}[v][c(u)]++$.
+    -   Increment $deg_{in}[v][c(u)]++$.
         
 
 This gives every node’s color-in-degree vector.
@@ -54,7 +54,7 @@ For each color $g = 1..m$:
     
 2.  For each color $k = 1..m$:
     
-    -   Compute $t_{g,k} = \max_{v: c(v)=g} \text{deg_in}[v][k]$.
+    -   Compute $t_{g,k} = \max_{v: c(v)=g} deg_{in}[v][k]$.
         
 
 This defines the  **target color-in-degree vector**  for group $g$:  
@@ -75,7 +75,7 @@ For each node $v$ of color $g$:
 
 For each color $k \in [1,m]$:
 
--   Let $\delta_{v,k} = t_{g,k} - \text{deg_in}[v][k]$
+-   Let $\delta_{v,k} = t_{g,k} - deg_{in}[v][k]$
     
 -   If $\delta_{v,k} > 0$, then we must add $\delta_{v,k}$ new edges  **from nodes of color $k$**  to $v$.
     
@@ -138,7 +138,7 @@ In the worst case, $M_{add} \le N m \cdot \max_{v,k} t_{g,k}$, but practically $
 
 -   After repair, for every color $g$, every node $v$ with $c(v)=g$ has:  
     [  
-    \text{deg_in}[v][k] = t_{g,k} = \max_{v': c(v')=g} \text{deg_in}[v'][k]  
+    deg_{in}[v][k] = t_{g,k} = \max_{v': c(v')=g} deg_{in}[v'][k]  
     ]
     
 -   Thus all nodes in color $g$ share the same color-in-degree vector.
